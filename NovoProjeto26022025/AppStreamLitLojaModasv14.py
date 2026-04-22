@@ -165,7 +165,7 @@ def lista_produtos():
 # 3. FUNÇÕES DE GESTÃO DE UTILIZADORES
 # ------------------------------------------------
 
-def regista_utilizador(username, password_hash, nome, email, is_admin=False):
+def regista_utilizador(username, password, nome, email, is_admin=False):
     conn = get_db_connection()
     if conn is None:
         return False
@@ -177,11 +177,11 @@ def regista_utilizador(username, password_hash, nome, email, is_admin=False):
             st.error("Este nome de utilizador já existe!")
             return False
 
-        # FAZER HASH DA password_hash COM BCRYPT
-        hashed_password_hash = bcrypt.hashpw(password_hash.encode('utf-8'), bcrypt.gensalt())
+        # FAZER HASH DA password (texto simples) COM BCRYPT
+        hashed_password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         cursor.execute(
             "INSERT INTO utilizadores (username, password_hash, nome, email, is_admin) VALUES (%s, %s, %s, %s, %s)",
-            (username, hashed_password_hash, nome, email, is_admin) # GUARDAR password_hash HASHED
+            (username, hashed_password_hash, nome, email, is_admin) # GUARDAR password HASHED
         )
         conn.commit()
         st.success("Utilizador registado com sucesso!")
