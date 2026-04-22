@@ -17,20 +17,29 @@ NO_IMAGE_PATH = 'noimage.jpg'
 if not os.path.exists("images"):
     os.makedirs("images")
 
-# Configuração da ligação ao MySQL
+# Configuração da ligação ao MySQL (via variáveis de ambiente)
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'loja_modas'
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'user': os.getenv('DB_USER', 'root'),
+    'password': os.getenv('DB_PASSWORD', ''),
+    'database': os.getenv('DB_NAME', 'loja_modas')
 }
+
+# Exigir password não vazia para reduzir risco de acesso não autorizado
+if not db_config['password'] or not db_config['password'].strip():
+    st.error("Configuração insegura: defina a variável de ambiente DB_PASSWORD com um valor não vazio.")
+    st.stop()
 
 # Função para estabelecer a ligação ao MySQL com tratamento de exceções
 def get_db_connection():
     try:
-        conn = mysql.connector.connect(host='localhost', user='root', password='')
+        conn = mysql.connector.connect(
+            host=db_config['host'],
+            user=db_config['user'],
+            password=db_config['password']
+        )
         cursor = conn.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS loja_modas")
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_config['database']}")
         cursor.close()
         conn.close()
         conn = mysql.connector.connect(**db_config)
