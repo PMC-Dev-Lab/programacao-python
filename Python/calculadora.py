@@ -32,6 +32,9 @@ def calculate():
             result = multiply(num1, num2)
         elif operation == '4':
             result = divide(num1, num2)
+            if result == "Não é possível dividir por zero":
+                label_result.config(text=f"Erro: {result}")
+                return
         elif operation == '5':
             result = power(num1, num2)
         else:
