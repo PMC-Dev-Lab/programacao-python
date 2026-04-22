@@ -16,7 +16,7 @@ def divide(x, y):
     return x / y
 
 def power(x, y):
-    return math.pow(x, y)
+    return x ** y
 
 def calculate():
     try:
