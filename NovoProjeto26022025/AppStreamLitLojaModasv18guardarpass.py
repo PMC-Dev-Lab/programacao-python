@@ -552,7 +552,7 @@ def login_page():
 
             if not nome.strip():
                 st.error("Por favor, insira o seu Nome Completo.")
-            elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            elif len(email) > 254 or not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
                 st.error("Email inválido. Por favor, insira um email no formato correto (ex: exemplo@dominio.com).")
             else:  # *** THIS ELSE BLOCK MUST BE INDENTED INSIDE the 'if st.button' ***
                 if atualizar_utilizador(user_id, nome, email): # *** THIS IF AND EVERYTHING BELOW MUST BE FURTHER INDENTED ***
@@ -564,7 +564,7 @@ def login_page():
                     
             if not nome.strip():
                 st.error("Por favor, insira o seu Nome Completo.")
-            elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            elif len(email) > 254 or not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
                 st.error("Email inválido. Por favor, insira um email no formato correto (ex: exemplo@dominio.com).")
             else:
                 if atualizar_utilizador(user_id, nome, email):
