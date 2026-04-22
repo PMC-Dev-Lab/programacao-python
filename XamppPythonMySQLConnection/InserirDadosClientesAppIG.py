@@ -22,9 +22,10 @@ def inserir_dados():
         return
 
     # Validação de email
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        messagebox.showerror("Erro", "O email não é válido!")
-        return
+    if len(email) > 254:
+        st.error("Email demasiado longo.")
+    elif not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+        st.error("Email inválido.")
 
     # Validação de telefone
     if not telefone.isdigit() or len(telefone) < 9:
