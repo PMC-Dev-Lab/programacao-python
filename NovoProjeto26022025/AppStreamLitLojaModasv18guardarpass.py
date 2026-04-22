@@ -669,9 +669,9 @@ def login_page():
                     if new_username and new_password_hash and confirm_password_hash and nome and email:
                         if new_password_hash != confirm_password_hash:
                             st.error("As password não coincidem!")
-                        elif len(new_password_hash) < 3:
-                            st.error("A password deve ter pelo menos 3 caracteres.")
-                        elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                        elif len(email) > 254:
+                            st.error("Email demasiado longo.")
+                        elif not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
                             st.error("Email inválido.")
                         else:
                             if regista_utilizador(new_username, new_password_hash, nome, email):
