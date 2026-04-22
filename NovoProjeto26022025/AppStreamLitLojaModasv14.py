@@ -253,12 +253,13 @@ def eliminar_utilizador(id_utilizador):
     """Elimina um utilizador da base de dados."""
     conn = get_db_connection()
     if conn is None:
-        return
+        return False
     try:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM utilizadores WHERE id = %s", (id_utilizador,))
         conn.commit()
         st.success("Utilizador eliminado com sucesso!")
+        return True
     except mysql.connector.Error as err:
         st.error(f"Erro ao eliminar utilizador: {err}")
         return False
