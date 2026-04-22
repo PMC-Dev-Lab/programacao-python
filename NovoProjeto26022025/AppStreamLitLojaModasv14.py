@@ -17,20 +17,29 @@ NO_IMAGE_PATH = 'noimage.jpg'
 if not os.path.exists("images"):
     os.makedirs("images")
 
-# Configuração da ligação ao MySQL
+# Configuração da ligação ao MySQL (via variáveis de ambiente)
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'loja_modas'
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'user': os.getenv('DB_USER', 'root'),
+    'password': os.getenv('DB_PASSWORD', ''),
+    'database': os.getenv('DB_NAME', 'loja_modas')
 }
+
+# Exigir password não vazia para reduzir risco de acesso não autorizado
+if not db_config['password'] or not db_config['password'].strip():
+    st.error("Configuração insegura: defina a variável de ambiente DB_PASSWORD com um valor não vazio.")
+    st.stop()
 
 # Função para estabelecer a ligação ao MySQL com tratamento de exceções
 def get_db_connection():
     try:
-        conn = mysql.connector.connect(host='localhost', user='root', password='')
+        conn = mysql.connector.connect(
+            host=db_config['host'],
+            user=db_config['user'],
+            password=db_config['password']
+        )
         cursor = conn.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS loja_modas")
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_config['database']}")
         cursor.close()
         conn.close()
         conn = mysql.connector.connect(**db_config)
@@ -74,7 +83,11 @@ def cria_tabelas():
         cursor.execute("SELECT * FROM utilizadores WHERE username = 'admin'")
         if not cursor.fetchone():
             # FAZER HASH DA PASSWORD ADMIN COM BCRYPT ANTES DE INSERIR
-            admin_password = '123' # Password inicial do admin
+            admin_password = os.getenv("ADMIN_INITIAL_PASSWORD")
+            if not admin_password:
+                raise ValueError(
+                    "A variável de ambiente ADMIN_INITIAL_PASSWORD deve estar definida para criar o utilizador admin inicial."
+                )
             hashed_admin_password = bcrypt.hashpw(admin_password.encode('utf-8'), bcrypt.gensalt())
 
             cursor.execute(
@@ -165,7 +178,7 @@ def lista_produtos():
 # 3. FUNÇÕES DE GESTÃO DE UTILIZADORES
 # ------------------------------------------------
 
-def regista_utilizador(username, password_hash, nome, email, is_admin=False):
+def regista_utilizador(username, password, nome, email, is_admin=False):
     conn = get_db_connection()
     if conn is None:
         return False
@@ -177,11 +190,11 @@ def regista_utilizador(username, password_hash, nome, email, is_admin=False):
             st.error("Este nome de utilizador já existe!")
             return False
 
-        # FAZER HASH DA password_hash COM BCRYPT
-        hashed_password_hash = bcrypt.hashpw(password_hash.encode('utf-8'), bcrypt.gensalt())
+        # FAZER HASH DA password (texto simples) COM BCRYPT
+        hashed_password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         cursor.execute(
             "INSERT INTO utilizadores (username, password_hash, nome, email, is_admin) VALUES (%s, %s, %s, %s, %s)",
-            (username, hashed_password_hash, nome, email, is_admin) # GUARDAR password_hash HASHED
+            (username, hashed_password_hash, nome, email, is_admin) # GUARDAR password HASHED
         )
         conn.commit()
         st.success("Utilizador registado com sucesso!")
@@ -212,7 +225,7 @@ def check_login(username, password_hash):
                 st.success(f"Bem-vindo, {username}!")
                 return True
             else:
-                st.error("password_hash inválida. Tente novamente.")
+                st.error("Password inválida. Tente novamente.")
                 return False
         else:
             st.error("Utilizador não encontrado. Verifique o nome de utilizador.")
