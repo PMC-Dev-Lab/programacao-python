@@ -86,7 +86,7 @@ radio_power.pack(pady=5)
 button_calculate = ctk.CTkButton(root, text="Calcular", command=calculate)
 button_calculate.pack(pady=20)
 
-label_result = ctk.CTkLabel(root, text="Resultado: ")
+label_result = ctk.CTkLabel(root, text="Resultado:")
 label_result.pack(pady=10)
 
 # Iniciar o loop principal da interface gráfica
