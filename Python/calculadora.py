@@ -12,7 +12,7 @@ def multiply(x, y):
 
 def divide(x, y):
     if y == 0:
-        return "Não é possível dividir por zero"
+        raise ZeroDivisionError("Não é possível dividir por zero")
     return x / y
 
 def power(x, y):
@@ -32,15 +32,14 @@ def calculate():
             result = multiply(num1, num2)
         elif operation == '4':
             result = divide(num1, num2)
-            if result == "Não é possível dividir por zero":
-                label_result.config(text=f"Erro: {result}")
-                return
         elif operation == '5':
             result = power(num1, num2)
         else:
             result = "Operação inválida"
 
         label_result.config(text=f"Resultado: {result}")
+    except ZeroDivisionError as e:
+        label_result.config(text=f"Erro: {e}")
     except ValueError:
         label_result.config(text="Erro: Entrada inválida")
 
