@@ -74,7 +74,11 @@ def cria_tabelas():
         cursor.execute("SELECT * FROM utilizadores WHERE username = 'admin'")
         if not cursor.fetchone():
             # FAZER HASH DA PASSWORD ADMIN COM BCRYPT ANTES DE INSERIR
-            admin_password = '123' # Password inicial do admin
+            admin_password = os.getenv("ADMIN_INITIAL_PASSWORD")
+            if not admin_password:
+                raise ValueError(
+                    "A variável de ambiente ADMIN_INITIAL_PASSWORD deve estar definida para criar o utilizador admin inicial."
+                )
             hashed_admin_password = bcrypt.hashpw(admin_password.encode('utf-8'), bcrypt.gensalt())
 
             cursor.execute(
