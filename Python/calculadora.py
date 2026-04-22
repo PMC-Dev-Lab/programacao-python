@@ -1,7 +1,3 @@
-
-pip install customtkinter
-
-
 import customtkinter as ctk
 import math
 
