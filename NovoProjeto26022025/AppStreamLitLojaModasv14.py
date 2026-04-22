@@ -212,7 +212,7 @@ def check_login(username, password_hash):
                 st.success(f"Bem-vindo, {username}!")
                 return True
             else:
-                st.error("password_hash inválida. Tente novamente.")
+                st.error("Password inválida. Tente novamente.")
                 return False
         else:
             st.error("Utilizador não encontrado. Verifique o nome de utilizador.")
