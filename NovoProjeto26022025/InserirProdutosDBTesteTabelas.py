@@ -27,6 +27,7 @@ def listar_produtos():
  
     except Error as err:
         print(f"Erro ao listar os produtos: {err}")
+        return None
     finally:
         if mydb.is_connected():
             mycursor.close()
