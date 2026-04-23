@@ -3,6 +3,7 @@ from tkinter import messagebox  # Para apresentar mensagens
 import mysql.connector  # Para interagir com MySQL
 import re  # Biblioteca para validação de email e telefone
 
+MIN_PHONE_LENGTH = 9
 
 # Função para validar e inserir dados na tabela Clientes
 def inserir_dados():
@@ -30,8 +31,8 @@ def inserir_dados():
         return
 
     # Validação de telefone
-    if not telefone.isdigit() or len(telefone) < 9:
-        messagebox.showerror("Erro", "O telefone deve conter apenas números e ter pelo menos 9 dígitos!")
+    if not telefone.isdigit() or len(telefone) < MIN_PHONE_LENGTH:
+        messagebox.showerror("Erro", f"O telefone deve conter apenas números e ter pelo menos {MIN_PHONE_LENGTH} dígitos!")
         return
 
     # Inserir dados na base de dados tstore
@@ -46,7 +47,10 @@ def inserir_dados():
         mycursor = mydb.cursor()  # Cria um cursor para executar comandos SQL
 
         # Query de inserção corrigida (garantindo que 'País' seja o nome correto da coluna)
-        sql = "INSERT INTO Clientes (Nome, Apelido, Email, Telefone, Morada, Codigo_postal, Localidade, País) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        sql = (
+            "INSERT INTO Clientes (Nome, Apelido, Email, Telefone, Morada, Codigo_postal, Localidade, País) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        )
         valores = (nome, apelido, email, telefone, morada, codigo_postal, localidade, pais)
 
         mycursor.execute(sql, valores)
