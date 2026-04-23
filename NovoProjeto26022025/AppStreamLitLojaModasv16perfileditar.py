@@ -4,7 +4,6 @@ import mysql.connector
 import re
 import os
 import bcrypt
-from PIL import Image
 
 # ------------------------------------------------
 # 1. CONFIGURAÇÃO INICIAL E CRIAÇÃO DE TABELAS
