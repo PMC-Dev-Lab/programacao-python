@@ -34,13 +34,13 @@ def calculate():
         elif operation == '5':
             result = power(num1, num2)
         else:
-            result = "Operação inválida"
+            raise ValueError("Operação inválida")
 
         label_result.config(text=f"Resultado: {result}")
     except ZeroDivisionError as e:
         label_result.config(text=f"Erro: {e}")
-    except ValueError:
-        label_result.config(text="Erro: Entrada inválida")
+    except ValueError as e:
+        label_result.config(text=f"Erro: {e}" if str(e) else "Erro: Entrada inválida")
 
 # Configuração da janela principal
 root = ctk.CTk()
