@@ -2,7 +2,6 @@ import re
 import streamlit as st
 import mysql.connector
 import os
-from PIL import Image
 import io
 
 # Caminho da imagem padrão
