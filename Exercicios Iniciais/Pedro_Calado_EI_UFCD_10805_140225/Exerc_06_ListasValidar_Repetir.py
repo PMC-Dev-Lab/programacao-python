@@ -39,7 +39,7 @@ while True:
 
     numeros = []
 
-    for i in range(qtd):
+    for _ in range(qtd):
         num = obter_numero()
         numeros.append(num)
 
