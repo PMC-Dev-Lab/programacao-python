@@ -139,5 +139,5 @@ class AppInserirClienteMySQL:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = AppInserirClienteMySQL(root)
+    AppInserirClienteMySQL(root)
     root.mainloop()
