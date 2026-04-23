@@ -3,6 +3,7 @@ from tkinter import messagebox  # Para apresentar mensagens
 import mysql.connector  # Para interagir com MySQL
 import re  # Biblioteca para validação de email e telefone
 
+MIN_PHONE_LENGTH = 9
 
 # Função para validar e inserir dados na tabela Clientes
 def inserir_dados():
@@ -30,8 +31,8 @@ def inserir_dados():
         return
 
     # Validação de telefone
-    if not telefone.isdigit() or len(telefone) < 9:
-        messagebox.showerror("Erro", "O telefone deve conter apenas números e ter pelo menos 9 dígitos!")
+    if not telefone.isdigit() or len(telefone) < MIN_PHONE_LENGTH:
+        messagebox.showerror("Erro", f"O telefone deve conter apenas números e ter pelo menos {MIN_PHONE_LENGTH} dígitos!")
         return
 
     # Inserir dados na base de dados tstore
