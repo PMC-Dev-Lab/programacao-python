@@ -46,7 +46,10 @@ def inserir_dados():
         mycursor = mydb.cursor()  # Cria um cursor para executar comandos SQL
 
         # Query de inserção corrigida (garantindo que 'País' seja o nome correto da coluna)
-        sql = "INSERT INTO Clientes (Nome, Apelido, Email, Telefone, Morada, Codigo_postal, Localidade, País) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        sql = (
+            "INSERT INTO Clientes (Nome, Apelido, Email, Telefone, Morada, Codigo_postal, Localidade, País) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        )
         valores = (nome, apelido, email, telefone, morada, codigo_postal, localidade, pais)
 
         mycursor.execute(sql, valores)
