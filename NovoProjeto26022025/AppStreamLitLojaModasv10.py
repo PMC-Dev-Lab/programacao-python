@@ -3,7 +3,6 @@ from streamlit_option_menu import option_menu
 import mysql.connector
 import re
 import os
-from PIL import Image
 
 # ------------------------------------------------
 # 1. CONFIGURAÇÃO INICIAL E CRIAÇÃO DE TABELAS
