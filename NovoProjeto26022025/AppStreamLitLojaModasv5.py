@@ -2,7 +2,6 @@ import streamlit as st
 import mysql.connector
 import os
 from PIL import Image
-import io
 
 # Caminho da imagem padrão
 NO_IMAGE_PATH = 'noimage.jpg'  # Certifique-se de ter a imagem no caminho correto
